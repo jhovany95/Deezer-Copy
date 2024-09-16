@@ -1,0 +1,152 @@
+
+<header>
+    <nav class="flex items-center justify-between px-4 py-2 bg-white">
+        <div class="w-full flex flex-none items-center justify-between mx-auto p-4">
+            <a class="flex items-center space-x-3 rtl:space-x-reverse" href="/">
+            <img src="../assets/logo.png" class="h-7" alt="Logo" />
+            </a>
+            <div class="flex-1 pl-12">
+                <button type="button"  data-collapse-toggle="navbar-search" aria-controls="navbar-search" aria-expanded="false" class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 me-1">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                    <span class="sr-only">Search</span>
+                </button>
+                <div class="relative hidden md:block">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-black " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                        <span class="sr-only">Search icon</span>
+                    </div>
+                    <input type="text" id="search-navbar"  [(ngModel)]="searchTerm" (keydown.enter)="searchSongs()" class="block w-11/12 p-1.5 ps-10 text-lg text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Search artists...">
+                 </div>
+                <button data-collapse-toggle="navbar-search" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-search" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                        </svg>
+                </button>
+            </div>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul class="font-medium text-lg flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white ">
+                    <li class="pt-2">
+                        <a class="block pt-3  px-3 text-black  rounded md:bg-transparent  md:p-0 hover:text-[#EF5466]" aria-current="page">Home</a>
+                    </li>
+                    <li class="pt-2">
+                        <a class="block pt-3  px-3  text-[#EF5466] rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 ">Discover</a>
+                    </li>
+                    <li class="pt-2">
+                        <a class="block pt-3  px-3 text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#EF5466] md:p-0 ">Recents</a>
+                    </li>
+                    <li class="pt-2">
+                        <a class="block pt-3  px-3 text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#EF5466] md:p-0 ">Library</a>
+                    </li>
+                    <li>
+                        <button type="button" class="flex text-sm  rounded-full md:me-0 focus:ring-4 " id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="w-12 h-12 rounded-full" src="../assets/profile.svg" alt="user photo">
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="overflow-auto w-full bodyContainer">
+
+    <div *ngIf="!display" class="flex w-full justify-center pt-56">
+        <div class="w-full">
+            <h1 class="text-3xl text-center"> <span class="font-bold">¡Welcome!</span> Try searching for artists using the search bar!</h1>
+        </div>
+    </div>
+
+    <h1  *ngIf="display" class="text-3xl pt-6">  Resultados para: <span class="font-bold">{{searchTerm}} </span></h1>
+
+    <div *ngIf="display" class="flex flex-wrap w-full items-start justify-start mt-10 ">
+    
+        <!-- cards -->
+        <div *ngFor="let song of songs" class="p-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 aspect-[4/3] cursor-pointer group" (click)="setAudio(song.preview, song.title, song.album.title, song.album.cover_medium)">
+            <div class="relative flex rounded-lg h-full dark:bg-gray-800 bg-teal-400 p-8 flex-col bg-cover bg-center transition-all duration-300" [ngStyle]="{'background-image': 'url(' + song.album.cover_medium + ')'}">
+            
+                <div class="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                    </svg>
+                </div>
+
+                <div class="flex items-center mb-3">
+                    <h2 class="text-white text-lg font-medium bottom-0">{{ song.title }}</h2>
+                </div>
+                <div class="flex flex-col justify-between flex-grow">
+                    <h5 class="leading-relaxed text-base text-white ">{{ song.artist.name }}</h5>
+                    <p class="text-white">{{ song.album.title }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div *ngIf="displayPlayer" class="flex w-full absolute bottom-0 mb-0 items-center justify-center bg-white rounded-md">
+        <div class="w-full">
+          <div class="bg-white border-gray-200 border-b  rounded-t-xl p-2 pb-4">
+                <div class="flex items-center space-x-4">
+                    <img src="{{imgSong()}}" alt="" width="64" height="64" class="flex-none rounded-lg bg-slate-100" />
+                    <div class="min-w-0 flex-auto space-y-1 font-semibold">
+                        <h2 class="text-gray-800 text-sm leading-6 truncate"> {{albumSong()}} </h2>
+                        <p class="text-gray-800 text-lg"> {{nameSong()}} </p>
+                    </div>
+                </div>
+      
+                <!-- Barra de progreso -->
+                <div class="space-y-2 pt-2">
+                    <div class="relative">
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 ">
+                            <div  class="bg-[#EF5466] h-1.5 rounded-full " [ngStyle]="{ 'width': porcentaje() + '%' }"></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-sm leading-6 font-medium">
+                        <div>{{ currentTime }}</div>
+                        <div>{{ duration }}</div>
+                    </div>
+                </div>
+          </div>
+      
+            <!-- Controles del reproductor -->
+            <div class="bg-slate-50 text-slate-500 rounded-b-xl flex items-center">
+
+                <div class="flex-auto flex items-center justify-evenly">
+                    <button type="button"(click)="isPlaying ? togglePause() : togglePlay()" class="bg-white text-slate-900 flex-none w-16 h-16 rounded-full ring-1 ring-slate-900/5 shadow-md flex items-center justify-center">
+                            <ng-container *ngIf="isPlaying; else playIcon">
+                            <!-- Icon Pausa -->
+                            <svg width="30" height="32" fill="currentColor">
+                            <rect x="6" y="4" width="4" height="24" rx="2"></rect>
+                            <rect x="20" y="4" width="4" height="24" rx="2"></rect>
+                            </svg>
+                            </ng-container>
+                            <ng-template #playIcon>
+                            <!-- Icon Play -->
+                            <svg width="30" height="32" fill="currentColor">
+                            <polygon points="6,4 26,16 6,28" />
+                            </svg>
+                            </ng-template>
+                    </button>
+                </div>
+
+                <div class="flex items-center space-x-2 mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                    </svg>
+                    
+                    <input type="range" min="0" max="1" step="0.01" [value]="volume"  (input)="changeVolume($event)"  class="w-full h-2 bg-[#EF5466] accent-[#EF5466] rounded-lg cursor-pointer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
